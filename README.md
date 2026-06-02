@@ -32,7 +32,11 @@ int main() {
 }
 ```
 
-## Format Specifiers
+## Syntax
+```
+void sout(const char *format, ...);
+```
+### Format Specifiers
 | Specifier | Description |
 | --- | --- |
 | `%s` | Prints a null-terminated string. |
