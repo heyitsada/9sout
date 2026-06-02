@@ -33,7 +33,7 @@ int main() {
 ```
 
 ## Syntax
-```
+```c
 void sout(const char *format, ...);
 ```
 ### Format Specifiers
