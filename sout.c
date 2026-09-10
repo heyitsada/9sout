@@ -41,14 +41,14 @@ void write_chunk(const char *buf, int length) {
 
 void sout(const char *format, ...) {
     static char buffer[1024];
-    int pos = 0;
+    int position = 0;
     va_list arguments;
     va_start(arguments, format);
 
     for (const char *cursor = format; *cursor != '\0'; cursor++) {
-        if (pos >= 1023) {
-            write_chunk(buffer, pos);
-            pos = 0;
+        if (position >= 1023) {
+            write_chunk(buffer, position);
+            position = 0;
         }
 
         if (*cursor == '%' && *(cursor + 1) != '\0') {
@@ -58,11 +58,11 @@ void sout(const char *format, ...) {
                     const char *text = va_arg(arguments, const char *);
                     if (text == NULL) text = "(null)";
                     while (*text != '\0') {
-                        if (pos >= 1023) {
-                            write_chunk(buffer, pos);
-                            pos = 0;
+                        if (position >= 1023) {
+                            write_chunk(buffer, position);
+                            position = 0;
                         }
-                        buffer[pos++] = *text++;
+                        buffer[position++] = *text++;
                     }
                     break;
                 }
@@ -71,10 +71,10 @@ void sout(const char *format, ...) {
                     char digits[12];
                     int p = 0;
                     if (number == 0) {
-                        buffer[pos++] = '0';
+                        buffer[position++] = '0';
                     } else {
                         if (number < 0) {
-                            buffer[pos++] = '-';
+                            buffer[position++] = '-';
                             number = -number;
                         }
                         while (number > 0) {
@@ -82,37 +82,38 @@ void sout(const char *format, ...) {
                             number /= 10;
                         }
                         while (p > 0) {
-                            if (pos >= 1023) {
-                                write_chunk(buffer, pos);
-                                pos = 0;
+                            if (position >= 1023) {
+                                write_chunk(buffer, position);
+                                position = 0;
                             }
-                            buffer[pos++] = digits[--p];
+                            buffer[position++] = digits[--p];
                         }
                     }
                     break;
                 }
                 case 'c': {
-                    buffer[pos++] = (char)va_arg(arguments, int);
+                    buffer[position++] = (char)va_arg(arguments, int);
                     break;
                 }
                 case '%': {
-                    buffer[pos++] = '%';
+                    buffer[position++] = '%';
                     break;
                 }
                 default: {
-                    buffer[pos++] = '%';
-                    buffer[pos++] = *cursor;
+                    buffer[position++] = '%';
+                    buffer[position++] = *cursor;
                     break;
                 }
             }
         } else {
-            buffer[pos++] = *cursor;
+            buffer[position++] = *cursor;
         }
     }
 
-    if (pos > 0) {
-        write_chunk(buffer, pos);
+    if (position > 0) {
+        write_chunk(buffer, position);
     }
 
     va_end(arguments);
 }
+
