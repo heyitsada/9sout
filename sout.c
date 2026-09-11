@@ -28,6 +28,10 @@ SOFTWARE.
     #include <unistd.h>
 #endif
 
+typedef struct {
+    char data[1024];
+    int position;
+} OutputBuffer;
 
 void write_chunk(const char *buf, int length) {
     if (length <= 0) return;
@@ -39,16 +43,35 @@ void write_chunk(const char *buf, int length) {
 #endif
 }
 
+void flush(OutputBuffer *buffer) {
+    // better then fflush, real.
+
+    if (buffer->position > 0) {
+        write_chunk(buffer -> data, buffer -> position);
+        buffer -> position = 0;
+    }
+}
+
+void addchar(OutputBuffer *buffer, char c) {
+    if (buffer -> position >= 1023) {
+        flush(buffer);
+    }
+    
+    buffer->data[buffer->position++] = c;
+}
+
+
 void sout(const char *format, ...) {
-    static char buffer[1024];
-    int position = 0;
+    OutputBuffer stream = { 
+        .position = 0 
+    };
+
     va_list arguments;
     va_start(arguments, format);
 
     for (const char *cursor = format; *cursor != '\0'; cursor++) {
-        if (position >= 1023) {
-            write_chunk(buffer, position);
-            position = 0;
+        if (stream.position >= 1023) {
+            flush(&stream);
         }
 
         if (*cursor == '%' && *(cursor + 1) != '\0') {
@@ -58,11 +81,7 @@ void sout(const char *format, ...) {
                     const char *text = va_arg(arguments, const char *);
                     if (text == NULL) text = "(null)";
                     while (*text != '\0') {
-                        if (position >= 1023) {
-                            write_chunk(buffer, position);
-                            position = 0;
-                        }
-                        buffer[position++] = *text++;
+                        addchar(&stream, *text++);
                     }
                     break;
                 }
@@ -70,50 +89,50 @@ void sout(const char *format, ...) {
                     int number = va_arg(arguments, int);
                     char digits[12];
                     int p = 0;
+                    unsigned int num;
+
                     if (number == 0) {
-                        buffer[position++] = '0';
+                        
+                        addchar(&stream, '0');
+
                     } else {
                         if (number < 0) {
-                            buffer[position++] = '-';
-                            number = -number;
+                            addchar(&stream, '-');
+                            num = (unsigned int)(-(number + 1)) + 1;
+                        } else {
+                            num = (unsigned int)number;
                         }
-                        while (number > 0) {
-                            digits[p++] = (number % 10) + '0';
-                            number /= 10;
+
+                        while (num > 0) {
+                            digits[p++] = (num % 10) + '0';
+                            num /= 10;
                         }
+
                         while (p > 0) {
-                            if (position >= 1023) {
-                                write_chunk(buffer, position);
-                                position = 0;
-                            }
-                            buffer[position++] = digits[--p];
+                            addchar(&stream, digits[--p]);
                         }
                     }
                     break;
                 }
                 case 'c': {
-                    buffer[position++] = (char)va_arg(arguments, int);
+                    addchar(&stream, (char)va_arg(arguments, int));
                     break;
                 }
                 case '%': {
-                    buffer[position++] = '%';
+                    addchar(&stream, '%');
                     break;
                 }
                 default: {
-                    buffer[position++] = '%';
-                    buffer[position++] = *cursor;
+                    addchar(&stream, '%');
+                    addchar(&stream, *cursor);
                     break;
                 }
             }
         } else {
-            buffer[position++] = *cursor;
+            addchar(&stream, *cursor);
         }
     }
 
-    if (position > 0) {
-        write_chunk(buffer, position);
-    }
-
+    flush(&stream);
     va_end(arguments);
 }
-
