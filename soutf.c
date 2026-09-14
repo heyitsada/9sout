@@ -92,7 +92,7 @@ FormatTable parse_format(const char **cursor){
     return format;
 }
 
-void sout(const char *format, ...) {
+void soutf(const char *format, ...) {
     OutputBuffer stream = {
         .position = 0
     };

@@ -20,6 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef SOUTF_H
+#define SOUTF_H
 
 void write_chunk(const char *buf, int length);
-void sout(const char *format, ...);
+void soutf(const char *format, ...);
+
+#endif

@@ -1,53 +1,37 @@
 # sout (string out)
 
-`sout` is a lightweight, dependency-free C library designed as a minimalist alternative to `printf`.  while minimizing binary size and avoiding the massive overhead of the standard `stdio.h` library. 
+sout is a lightweight, dependency-free C library built around small, reusable utilities for working with strings and data in general.
 
-**sout** or string out has one single feature. Print characters to the terminal screen. Very small, and is *purposely* tiny. A mini version of `printf` if you considered.
-
-## Features
-* **Minimal**: Used **ZERO** dependencies, just system headers while being very straightforward. 
-* **Cross-Platform**: Native support for Windows (via `windows.h`) and POSIX systems (with `unistd.h`).
-* **Small**: Designed to keep your binary size small.
+# Features
+- Format Outputs
+- Regex systems
 
 Sout is best for optimization development on systems with POSIX or Win32.
 
 ---
 
-## Installation
-Clone the repository into your project directory:
+## Usage
+
+`sout` is organized as a collection of independent C components. Each component is provided as a matching `.h` header and `.c` source file. Use only the components your project requires; there is no need to link against the entire library.
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/waxodium/sout.git
 ```
 
-## Usage
-Example:
+Copy the .h and .c files for the components you want into your project, keeping each matching pair together.
+
+| Header | Description |
+|---|---|
+| `soutf.h` | Formatted output utilities. |
+| `soutspn.h` | Extracts data between specified delimiters. |
+
+
+## Single-Header Distribution
+
+For convenience, sout also ships with a minified single-header distribution containing the entire library at ``dist/sout.h``. This is an optional alternative for projects that prefer a single file.
+
 ```c
 #include "sout.h"
-
-int main() {
-    sout("Hello, %s! You have %d new messages.\n", "User", 5);
-    sout("Character: %c, Percent: %%\n", 'A');
-    return 0;
-}
 ```
-
-## Syntax
-```c
-void sout(const char *format, ...);
-```
-### Format Specifiers
-| Specifier | Description |
-| --- | --- |
-| `%s` | Prints a null-terminated string. |
-| `%d` | Prints a signed integer. |
-| `%c` | Prints a single character. |
-| `%%` | Prints a literal percent sign. |
-
-### Details:
-- **Safety:** If a `%s` specifier receives a NULL pointer, it safely prints (null) instead of crashing.
-
-- **Integer Conversion:** The %d specifier handles both positive and negative integers
-
-- **Buffer Management:** sout uses a static internal buffer of 1024 bytes. If the output length exceeds this, the buffer is automatically flushed to stdout
-
