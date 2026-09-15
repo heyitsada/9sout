@@ -20,3 +20,7 @@ int soutspn(const char *src, const char *start, const char *end, char *destinati
 
     return 1;
 }
+
+
+// %%%%%%%%% Header %%%%%%%%%
+int soutspn(const char *src, const char *start, const char *end, char *destination, size_t cap);

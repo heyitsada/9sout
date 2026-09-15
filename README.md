@@ -3,8 +3,11 @@
 sout is a lightweight, dependency-free C library built around small, reusable utilities for working with strings and data in general.
 
 # Features
-- Format Outputs
-- Regex systems
+
+| Header | Description |
+|---|---|
+| [sout_printout.h](./sout_printout.h) | Formatted & TUI output utilities. |
+| [sout_text.h](./sout_text.h) | Text & Strings regex|
 
 Sout is best for optimization development on systems with POSIX or Win32.
 
@@ -12,26 +15,24 @@ Sout is best for optimization development on systems with POSIX or Win32.
 
 ## Usage
 
-`sout` is organized as a collection of independent C components. Each component is provided as a matching `.h` header and `.c` source file. Use only the components your project requires; there is no need to link against the entire library.
-
-Clone the repository:
+`sout` is a collection of independent single-header file of C components. Include only what your project requires.
 
 ```bash
-git clone https://github.com/waxodium/sout.git
+git clone https://github.com/waxodium/sout/
 ```
 
-Copy the .h and .c files for the components you want into your project, keeping each matching pair together.
-
-| Header | Description |
-|---|---|
-| `soutf.h` | Formatted output utilities. |
-| `soutspn.h` | Extracts data between specified delimiters. |
-
-
-## Single-Header Distribution
-
-For convenience, sout also ships with a minified single-header distribution containing the entire library at ``dist/sout.h``. This is an optional alternative for projects that prefer a single file.
+For convenience, sout also ships with a minified single-header distribution containing the entire library at `dist/sout.min.h` (Minified) and `dist/sout.h` (Compacted).
 
 ```c
+#include "sout.min.h"
+// or
 #include "sout.h"
 ```
+
+---
+
+# License
+
+This library is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+

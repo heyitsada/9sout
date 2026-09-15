@@ -246,3 +246,8 @@ void soutf(const char *format, ...) {
     flush(&stream);
     va_end(arguments);
 }
+
+
+// &&&&&& Header &&&&&&
+void write_chunk(const char *buf, int length);
+void soutf(const char *format, ...);
