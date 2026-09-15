@@ -92,7 +92,7 @@ FormatTable parse_format(const char **cursor){
     return format;
 }
 
-void sout(const char *format, ...) {
+void soutf(const char *format, ...) {
     OutputBuffer stream = {
         .position = 0
     };
@@ -246,3 +246,8 @@ void sout(const char *format, ...) {
     flush(&stream);
     va_end(arguments);
 }
+
+
+// &&&&&& Header &&&&&&
+void write_chunk(const char *buf, int length);
+void soutf(const char *format, ...);

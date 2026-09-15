@@ -1,53 +1,38 @@
 # sout (string out)
 
-`sout` is a lightweight, dependency-free C library designed as a minimalist alternative to `printf`.  while minimizing binary size and avoiding the massive overhead of the standard `stdio.h` library. 
+sout is a lightweight, dependency-free C library built around small, reusable utilities for working with strings and data in general.
 
-**sout** or string out has one single feature. Print characters to the terminal screen. Very small, and is *purposely* tiny. A mini version of `printf` if you considered.
+# Features
 
-## Features
-* **Minimal**: Used **ZERO** dependencies, just system headers while being very straightforward. 
-* **Cross-Platform**: Native support for Windows (via `windows.h`) and POSIX systems (with `unistd.h`).
-* **Small**: Designed to keep your binary size small.
+| Header | Description |
+|---|---|
+| [sout_printout.h](./sout_printout.h) | Formatted & TUI output utilities. |
+| [sout_text.h](./sout_text.h) | Text & Strings regex|
 
 Sout is best for optimization development on systems with POSIX or Win32.
 
 ---
 
-## Installation
-Clone the repository into your project directory:
+## Usage
+
+`sout` is a collection of independent single-header file of C components. Include only what your project requires.
 
 ```bash
-git clone https://github.com/waxodium/sout.git
+git clone https://github.com/waxodium/sout/
 ```
 
-## Usage
-Example:
+For convenience, sout also ships with a minified single-header distribution containing the entire library at `dist/sout.min.h` (Minified) and `dist/sout.h` (Compacted).
+
 ```c
+#include "sout.min.h"
+// or
 #include "sout.h"
-
-int main() {
-    sout("Hello, %s! You have %d new messages.\n", "User", 5);
-    sout("Character: %c, Percent: %%\n", 'A');
-    return 0;
-}
 ```
 
-## Syntax
-```c
-void sout(const char *format, ...);
-```
-### Format Specifiers
-| Specifier | Description |
-| --- | --- |
-| `%s` | Prints a null-terminated string. |
-| `%d` | Prints a signed integer. |
-| `%c` | Prints a single character. |
-| `%%` | Prints a literal percent sign. |
+---
 
-### Details:
-- **Safety:** If a `%s` specifier receives a NULL pointer, it safely prints (null) instead of crashing.
+# License
 
-- **Integer Conversion:** The %d specifier handles both positive and negative integers
+This library is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- **Buffer Management:** sout uses a static internal buffer of 1024 bytes. If the output length exceeds this, the buffer is automatically flushed to stdout
 
