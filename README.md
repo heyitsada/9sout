@@ -7,7 +7,7 @@ sout is a lightweight, dependency-free C library built around small, reusable ut
 | Header | Description |
 |---|---|
 | [sout_printout.h](./sout_printout.h) | Formatted & TUI output utilities. |
-| [sout_text.h](./sout_text.h) | Text & Strings regex|
+| [sout_text.h](./sout_text.h) | Text utilities|
 
 Sout is best for optimization development on systems with POSIX or Win32.
 
