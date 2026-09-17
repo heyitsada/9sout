@@ -2,6 +2,11 @@
 
 sout is a lightweight, dependency-free C library built around small, reusable utilities for working with strings and data in general.
 
+# 9sout
+just sout on plan9, usage:
+- build with mk
+- test with 6.testsout(replace 6 if you use another architecture)
+- mk clean and mk nuke for clean
 # Features
 
 | Header | Description |
